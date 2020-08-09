@@ -2,6 +2,7 @@ package com.example.listview3;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -90,7 +91,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.delete(Reservations, "Booking_id = ?",new String[] {id});
     }*/
 
+    public boolean updateTable(String bookId, String roomType,String checkInDate,String checkOutDate,
+                               String numberOfRoom, String numberOfAdults, String numberOfChildren, String numberOfNight) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        String updateQuery = "UPDATE " + Reservations + " SET " +
+                Room_type + " = '" + roomType + "', " +
+                Check_in_date + " = '" + checkInDate + "', " +
+                Check_out_date + " = '" + checkOutDate + "', " +
+                Number_of_rooms + " = '" + numberOfRoom + "', " +
+                Number_of_adults + " = '" + numberOfAdults + "', " +
+                Number_of_children+ " = '" + numberOfChildren + "', " +
+                Number_of_nights + " = '" + numberOfNight + "' " +
+                " WHERE " + Booking_id + " = '" + bookId + "'";
+        Cursor cursor = db.rawQuery(updateQuery, null);
+        cursor.moveToFirst();
+        cursor.close();
+
+        return true;
+    }
 
     public void deleteName(String id){
         SQLiteDatabase db = this.getWritableDatabase();

@@ -22,6 +22,16 @@
         android:onClick="clickMe"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_below="@+id/buttonView"/>
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"

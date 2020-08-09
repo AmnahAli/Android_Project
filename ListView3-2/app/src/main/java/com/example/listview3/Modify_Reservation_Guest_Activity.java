@@ -14,13 +14,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static com.example.listview3.SQLiteHelper.Booking_id;
+import static com.example.listview3.SQLiteHelper.Number_of_rooms;
+import static com.example.listview3.SQLiteHelper.Reservations;
+
 public class Modify_Reservation_Guest_Activity extends AppCompatActivity {
 
 
     SQLiteHelper sqLiteHelper;
     SQLiteDatabase sqLiteDatabase;
     Cursor cursor;
-    Button ButtonLogOut, ButtonHome, ButtonConfirm;
+    Button ButtonLogOut, ButtonHome, ButtonModify;
 
 
     String[] autoRoomType = { "Standard","Deluxe","Suite"};
@@ -33,8 +37,7 @@ public class Modify_Reservation_Guest_Activity extends AppCompatActivity {
 
         ButtonLogOut = (Button) findViewById(R.id.button_logout);
         ButtonHome = (Button) findViewById(R.id.button_home);
-        ButtonConfirm = (Button) findViewById(R.id.button_Modify);
-
+        ButtonModify = (Button) findViewById(R.id.button_Modify);
 
         //Create Array Adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, autoRoomType);
@@ -45,7 +48,7 @@ public class Modify_Reservation_Guest_Activity extends AppCompatActivity {
         //Set the adapter
         acTextView.setAdapter(adapter);
 
-
+        sqLiteHelper = new SQLiteHelper(this);
         //////
 
 
@@ -66,18 +69,19 @@ public class Modify_Reservation_Guest_Activity extends AppCompatActivity {
         });*/
 
 
-        ButtonConfirm.setOnClickListener(new View.OnClickListener() {
+        ButtonModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sqLiteDatabase = sqLiteHelper.getWritableDatabase();
 
-                /////
+                String updateQuery = "UPDATE " + Reservations + " SET " + Number_of_rooms + " = 223 WHERE " + Booking_id + " = '3'";
+                Cursor cursor = sqLiteDatabase.rawQuery(updateQuery, null);
+                cursor.moveToFirst();
+                cursor.close();
 
                 Log.i("Modified Successful", "********");
                 startActivity(new Intent(Modify_Reservation_Guest_Activity.this, Details_of_Reservation_Guest_Activity.class));
             }
         });
-
-
-
     }
 }

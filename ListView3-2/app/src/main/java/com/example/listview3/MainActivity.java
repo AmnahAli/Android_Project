@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void SQLiteTableBuild(){
 
-        sqLiteDatabaseObj.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.Reservations+"("+SQLiteHelper.Booking_id+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+SQLiteHelper.Hotel_name+" text,"+SQLiteHelper.Hotel_location+" text,"+SQLiteHelper.Room_type+" text, "+SQLiteHelper.Number_of_rooms+" text, "+SQLiteHelper.Number_of_nights+" text, "+SQLiteHelper.Number_of_adults+" text, "+SQLiteHelper.Number_of_children+" text," +
+        sqLiteDatabaseObj.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.Reservations+"("+SQLiteHelper.Booking_id+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+SQLiteHelper.Hotel_name+" text,"+SQLiteHelper.Hotel_location+" text,"+SQLiteHelper.Room_type+" text, "+SQLiteHelper.Number_of_rooms+" text, "+SQLiteHelper.Number_of_nights+" text, "+SQLiteHelper.Number_of_adults+" text, "+SQLiteHelper.Number_of_children+" text, " +
                 ""+SQLiteHelper.Check_in_date+" text, "+SQLiteHelper.Check_out_date+" text, "+SQLiteHelper.Price_per_night+" text, "+SQLiteHelper.Tax+" text, "+SQLiteHelper.Total_price+" text, "+SQLiteHelper.Billed_price+" text, "+SQLiteHelper.Billing_address+" text, "+SQLiteHelper.First_name+" text, "+SQLiteHelper.Last_name+" text, "+SQLiteHelper.Reservation_date+" text);");
     }
 
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         {
 
             SQLiteDataBaseQueryHolder = "INSERT INTO "+SQLiteHelper.Reservations+
-                    " (reservation_date,room_type,number_of_rooms,check_in_date, check_out_date, " +
+                    " (reservation_date,room_type,number_of_rooms, check_in_date, check_out_date, " +
                     "first_name, last_name, number_of_adults, number_of_children, total_price, hotel_name , hotel_location, number_of_nights, price_per_night) " +
                     "VALUES('"+ReservationDateHolder+"', '"+RoomTypeHolder+"' , '"+NumRoomHolder+"', " +
                     "'"+CheckInHolder+"', '"+CheckOutHolder+"', '"+FirstNameHolder+"','"+LastNameHolder+"'," +
