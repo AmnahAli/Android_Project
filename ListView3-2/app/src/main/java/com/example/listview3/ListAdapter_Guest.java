@@ -162,21 +162,16 @@ public class ListAdapter_Guest extends BaseAdapter {
                 intent.putExtra("checkInDate", CheckInDate.get(position));
                 intent.putExtra("checkOutDate", CheckOutDate.get(position));
 
-
                // intent.putExtra("firstName", FirstName.get(position));
                // intent.putExtra("lastName", LastName.get(position));
                 intent.putExtra("numberOfAdults", NumberOfAdults.get(position));
                 intent.putExtra("numberOfChildren", NumberOfChildren.get(position));
                 intent.putExtra("totalPrice", TotalPrice.get(position));
 
-
-
                 intent.putExtra("hotelName", HotelName.get(position));
                 intent.putExtra("hotelLocation", HotelLocation.get(position));
                 intent.putExtra("numberOfNights", NumberOfNights.get(position));
                 intent.putExtra("pricePerNight", PricePerNight.get(position));
-
-
 
                 context.startActivity(intent);
             }

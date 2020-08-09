@@ -18,7 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.example.listview3.SQLiteHelper.Booking_id;
+import static com.example.listview3.SQLiteHelper.Check_in_date;
+import static com.example.listview3.SQLiteHelper.Check_out_date;
+import static com.example.listview3.SQLiteHelper.Number_of_adults;
+import static com.example.listview3.SQLiteHelper.Number_of_children;
+import static com.example.listview3.SQLiteHelper.Number_of_nights;
+import static com.example.listview3.SQLiteHelper.Number_of_rooms;
 import static com.example.listview3.SQLiteHelper.Reservations;
+import static com.example.listview3.SQLiteHelper.Room_type;
 
 public class Details_of_Reservation_Guest_Activity extends AppCompatActivity {
 
@@ -26,8 +33,15 @@ public class Details_of_Reservation_Guest_Activity extends AppCompatActivity {
     SQLiteDatabase sqLiteDatabase;
     Cursor cursor;
     Button ButtonLogOut, ButtonHome, ButtonModify, ButtonCancel;
-
-
+    EditText roomTypeE;
+    EditText checkInDateE;
+    EditText checkOutDateE;
+    EditText numberOfRoomE;
+    EditText numberOfAdultsE;
+    EditText numberOfChildrenE;
+    EditText numberOfNightsE;
+    Boolean editable = false;
+    String bookId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +53,7 @@ public class Details_of_Reservation_Guest_Activity extends AppCompatActivity {
         ButtonModify = (Button) findViewById(R.id.button_Modify);
         ButtonCancel = (Button) findViewById(R.id.button_Cancel);
 
-
-
-        final String id = getIntent().getStringExtra("id");
+        bookId = getIntent().getStringExtra("id");
         String roomType = getIntent().getStringExtra("roomType");
         String numberOfRooms = getIntent().getStringExtra("numberOfRooms");
         String checkInDate = getIntent().getStringExtra("checkInDate");
@@ -54,22 +66,20 @@ public class Details_of_Reservation_Guest_Activity extends AppCompatActivity {
         String numberOfNights = getIntent().getStringExtra("numberOfNights");
         String pricePerNight = getIntent().getStringExtra("pricePerNight");
 
-
         final TextView idE = (TextView) findViewById(R.id.textViewID);
         TextView hotelNameE = findViewById(R.id.textViewHotelName);
         TextView hotelLocationE = findViewById(R.id.textViewHotelLocation);
-        TextView roomTypeE = findViewById(R.id.textViewRoomType);
-        TextView checkInDateE = findViewById(R.id.textViewCheckInData);
-        TextView checkOutDateE = findViewById(R.id.textViewCheckOutData);
-        TextView numberOfRoomE = findViewById(R.id.textViewNumberOfRoom);
-        TextView numberOfAdultsE = findViewById(R.id.textViewAdults);
-        TextView numberOfChildrenE = findViewById(R.id.textViewChildren);
+        roomTypeE = findViewById(R.id.textViewRoomType);
+        checkInDateE = findViewById(R.id.textViewCheckInData);
+        checkOutDateE = findViewById(R.id.textViewCheckOutData);
+        numberOfRoomE = findViewById(R.id.textViewNumberOfRoom);
+        numberOfAdultsE = findViewById(R.id.textViewAdults);
+        numberOfChildrenE = findViewById(R.id.textViewChildren);
+        numberOfNightsE = findViewById(R.id.textViewNumberOfNights);
         TextView totalPriceE = findViewById(R.id.textViewPrice);
-        TextView numberOfNightsE = findViewById(R.id.textViewNumberOfNights);
         TextView pricePerNightE = findViewById(R.id.textViewPricePerNight);
 
-
-        idE.setText(id);
+        idE.setText(bookId);
         roomTypeE.setText(roomType);
         checkInDateE.setText(checkInDate);
         checkOutDateE.setText(checkOutDate);
@@ -82,6 +92,7 @@ public class Details_of_Reservation_Guest_Activity extends AppCompatActivity {
         numberOfNightsE.setText(numberOfNights);
         pricePerNightE.setText(pricePerNight);
 
+        sqLiteHelper = new SQLiteHelper(this);
 
         ButtonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,24 +114,64 @@ public class Details_of_Reservation_Guest_Activity extends AppCompatActivity {
         ButtonModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Details_of_Reservation_Guest_Activity.this, Modify_Reservation_Guest_Activity.class));
+//                startActivity(new Intent(Details_of_Reservation_Guest_Activity.this, Modify_Reservation_Guest_Activity.class));
+                if(!editable) enableModifyView();
+                else {
+                    updateTable();
+                    disableModifyView();
+                }
             }
         });
 
 
 
     ButtonCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    sqLiteHelper.deleteName(id);
-                    Toast.makeText(Details_of_Reservation_Guest_Activity.this,"Reservation Deleted",Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Details_of_Reservation_Guest_Activity.this,List_of_Reservations_Guest_Activity.class));
+            @Override
+            public void onClick(View view) {
+                sqLiteHelper.deleteName(bookId);
+                Toast.makeText(Details_of_Reservation_Guest_Activity.this,"Reservation Deleted",Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+    }
 
-                }
-            });
+    private void enableModifyView() {
+        roomTypeE.setEnabled(true);
+        checkInDateE.setEnabled(true);
+        checkOutDateE.setEnabled(true);
+        numberOfRoomE.setEnabled(true);
+        numberOfAdultsE.setEnabled(true);
+        numberOfChildrenE.setEnabled(true);
+        numberOfNightsE.setEnabled(true);
 
-        }
+        ButtonModify.setText("Save");
+        editable = true;
+    }
 
+    private void disableModifyView() {
+        roomTypeE.setEnabled(false);
+        checkInDateE.setEnabled(false);
+        checkOutDateE.setEnabled(false);
+        numberOfRoomE.setEnabled(false);
+        numberOfAdultsE.setEnabled(false);
+        numberOfChildrenE.setEnabled(false);
+        numberOfNightsE.setEnabled(false);
+
+        ButtonModify.setText("Modify");
+        editable = false;
+    }
+
+    private void updateTable() {
+        String roomType = roomTypeE.getText().toString();
+        String checkInDate = checkInDateE.getText().toString();
+        String checkOutDate = checkOutDateE.getText().toString();
+        String numberOfRoom = numberOfRoomE.getText().toString();
+        String numberOfAdults = numberOfAdultsE.getText().toString();
+        String numberOfChildren = numberOfChildrenE.getText().toString();
+        String numberOfNight = numberOfNightsE.getText().toString();
+
+        sqLiteHelper.updateTable(bookId, roomType, checkInDate, checkOutDate, numberOfRoom, numberOfAdults, numberOfChildren, numberOfNight);
+    }
 
         /*ButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
